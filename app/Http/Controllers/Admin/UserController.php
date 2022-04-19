@@ -16,6 +16,8 @@ class UserController extends Controller
 
         $input['password'] = md5($request->password);
 
+        $input['role'] = 'siswa';
+
         $create = User::create($input);
 
         if (!$create){
