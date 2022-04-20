@@ -26,15 +26,8 @@ class AuthController extends Controller
             ]);
         }
 
-        if ($user->role === 'siswa'){
-            $data_user = User::with('student')->where('id_number', $input['id_number'])->where('password', $input['password'])->first();
-        }
-        if ($user->role === 'guru'){
-            $data_user = User::with('teacher')->where('id_number', $input['id_number'])->where('password', $input['password'])->first();
-        }
-
         return response([
-            'data' => $data_user
+            'data' => $user
         ]);
     }
 }
