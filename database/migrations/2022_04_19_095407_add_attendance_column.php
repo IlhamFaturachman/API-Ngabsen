@@ -25,6 +25,6 @@ class AddAttendanceColumn extends Migration
      */
     public function down()
     {
-        //
+        
     }
 }
