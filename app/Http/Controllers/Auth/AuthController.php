@@ -16,6 +16,8 @@ class AuthController extends Controller
 
         $input = $request->only('id_number' , 'password');
 
+        $input['password'] = md5($input['password']);
+
         $user = User::where('id_number', $input['id_number'])->where('password', $input['password'])->first();
 
         if (!$user){
