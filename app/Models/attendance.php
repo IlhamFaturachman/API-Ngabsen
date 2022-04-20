@@ -16,6 +16,10 @@ class attendance extends Model
         return $this->belongsTo(User::class , 'user_id');
     }
 
+    function student(){
+        return $this->belongsTo(student::class , 'student_id');
+    }
+
     function attendance_list(){
         return $this->belongsTo(attendance_list::class , 'attendance_id');
     }
