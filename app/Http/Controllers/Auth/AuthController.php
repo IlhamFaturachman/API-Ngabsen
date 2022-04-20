@@ -23,7 +23,7 @@ class AuthController extends Controller
         if (!$user){
             return response([
                 'message' => 'Id or Password is Incorrect'
-            ],400);
+            ]);
         }
 
         if ($user->role === 'siswa'){
