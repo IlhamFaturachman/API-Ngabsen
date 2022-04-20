@@ -19,9 +19,9 @@ class GuruTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->string('name');
-            $table->string('email');
+            $table->string('subject');
             $table->string('phone');
-            $table->string('address');
+            $table->string('image');
         });
     }
 

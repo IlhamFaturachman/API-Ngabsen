@@ -37,4 +37,7 @@ Route::prefix('ngabsen')->group(function (){
     Route::post('/admin/userCreate' , [\App\Http\Controllers\Admin\UserController::class , 'create']);
     Route::post('/admin/userDelete', [\App\Http\Controllers\Admin\UserController::class, 'delete']);
     Route::get('/admin/userGetAll', [\App\Http\Controllers\Admin\UserController::class, 'getAll']);
+    Route::post('/admin/studentCreate' , [\App\Http\Controllers\Admin\StudentController::class , 'create']);
+    Route::post('/admin/studentDelete', [\App\Http\Controllers\Admin\StudentController::class, 'delete']);
+    Route::get('/admin/studentGetAll', [\App\Http\Controllers\Admin\StudentController::class, 'getAll']);
 });

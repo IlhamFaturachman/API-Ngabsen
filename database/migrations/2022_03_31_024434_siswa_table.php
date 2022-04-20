@@ -19,11 +19,10 @@ class SiswaTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->string('name');
-            $table->string('email');
             $table->string('phone');
-            $table->string('address');
             $table->string('class');
             $table->string('student_number');
+            $table->string('image');
         });
     }
 
