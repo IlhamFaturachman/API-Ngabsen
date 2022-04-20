@@ -10,4 +10,10 @@ class teacher extends Model
     use HasFactory;
     protected $guarded = [];
     public $timestamps = false;
+
+    public function attendance_list(){
+        return $this->hasMany(attendance_list::class , 'teacher_id');
+    }
+
+    
 }
