@@ -15,14 +15,11 @@ class Attendance extends Migration
     {
         Schema::create('attendances' , function (Blueprint $table){
             $table->id();
-            $table->foreignId('user_id')->constrained('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->foreignId('attendance_id')->constrained('attendance_lists')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
             $table->dateTime('attendance_time');
-            $table->enum('status' , ['onTime' , 'late']);
+            $table->enum('status' , ['onTime' , 'late' , 'permit']);
         });
     }
 

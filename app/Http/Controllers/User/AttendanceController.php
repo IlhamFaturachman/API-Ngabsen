@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\Auth;
 class AttendanceController extends Controller
 {
     function getAttendanceHistory(Request $request, $user_id){
-        $attendance = attendance::where('user_id', $user_id)->get();
-
-        foreach ($attendance as $key => $value) {
-            $data[$key] = attendance_list::where('id', $value->attendance_id)->first();
-        }
+        $data = attendance::with('attendance_list')->where('student_id' , $user_id)->get();
         
         return response([
             'data' => $data
@@ -25,11 +21,11 @@ class AttendanceController extends Controller
     
     function attendance(Request $request){
         $request->validate([
-            'user_id' => 'required',
+            'student_id' => 'required',
             'attendance_time' => 'required| dateFormat:Y-m-d H:i:s',
         ]);
 
-        $input = $request->only('user_id' , 'attendance_time');
+        $input = $request->only('student_id' , 'attendance_time');
 
         $attendance_id = Auth::guard('qr')->id();
 
@@ -51,7 +47,7 @@ class AttendanceController extends Controller
             ]);
         }
 
-        $data = attendance::with('user.student' , 'attendance_list.teacher')->where('id' , $create->id)->first();
+        $data = attendance::with('student' , 'attendance_list.teacher')->where('id' , $create->id)->first();
 
         return response([
             'data' => $data

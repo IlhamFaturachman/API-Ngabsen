@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\attendanceResource;
 use App\Models\attendance;
 use App\Models\attendance_list;
 use App\Models\student;
@@ -14,58 +15,73 @@ use Illuminate\Support\Facades\Auth;
 class AttendanceController extends Controller
 {
     function getAttendances(Request $request, $user_id){
-        $teacher_id = teacher::select('id')->where('user_id', $user_id)->first();
-        $data = attendance_list::where('teacher_id', $teacher_id['id'])->get();
+        $data = teacher::with('attendance_list')->where('user_id' , $user_id)->get();
         
         return response([
             'data' => $data
         ]);
     }
 
-    function getAllStudent(Request $request, $attendance_id){
-        $attendances = attendance::where('attendance_id', $attendance_id)->get();
+    // function getAllStudent(Request $request, $attendance_id){
+    //     $attendances = attendance::where('attendance_id', $attendance_id)->get();
 
-        foreach ($attendances as $key => $value) {
-            $student = student::where('user_id', $value->user_id)->first();
-            $data[$key] = [
-                "name" => $student->name,
-                "time" => $value->attendance_time,
-                "status" => $value->status,
-            ];
-        }
+    //     foreach ($attendances as $key => $value) {
+    //         $student = student::where('user_id', $value->user_id)->first();
+    //         $data[$key] = [
+    //             "name" => $student->name,
+    //             "time" => $value->attendance_time,
+    //             "status" => $value->status,
+    //         ];
+    //     }
         
-        return response([
-            'data' => $data
-        ]);
-    }
+    //     return response([
+    //         'data' => $data
+    //     ]);
+    // }
 
     function getAttendanceDetails(Request $request, $attendance_id) {
-        $attendees = attendance::where('attendance_id', $attendance_id)->get();
-        $attendance = attendance_list::where('id', $attendance_id)->first();
+        $data = attendance::with('student')->where('attendance_id' , $attendance_id)->get();
 
-        $onTime = 0;
-        $late = 0;
-        $other = 0;
-        foreach ($attendees as $key => $value) {
-            if ($value->status == 'onTime') {
-                $onTime++;
-            } else if ($value->status == 'late') {
-                $late++;
-            } else {
-                $other++;
+        $late = [];
+
+        $onTime = [];
+
+        $permit = [];
+
+        foreach ($data as $key => $value){
+            if($value->status === 'late'){
+                array_push($late , $value);
+            }if($value->status === 'onTime'){
+                array_push($onTime , $value);
+            }if($value->status === 'permit'){
+                array_push($permit , $value);
             }
         }
 
-        $statuses = [
-            'onTime' => $onTime,
-            'late' => $late,
-            'other' => $other,
-        ];
+        return response([
+            'data' => $data,
+            'data_count' => count($data),
+            'late' => count($late),
+            'onTime' => count($onTime),
+            'permit' => count($permit),
+        ]);
+    }
 
-        $attendance['statuses'] = $statuses;
+    public function changeAttendanceStatus(Request $request , $id){
+        $data = attendance::where('id' , $id)->first();
+
+        if(!$data){
+            return response([
+                'message' => 'No Data With Id'
+            ] , 401);
+        }
+
+        $data->status = 'permit';
+
+        $data->save();
 
         return response([
-            'data' => $attendance
+            'message' => 'success'
         ]);
     }
 }
