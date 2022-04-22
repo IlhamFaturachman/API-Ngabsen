@@ -53,14 +53,11 @@ class classController extends Controller
 
         $dataClasses = [];
 
-        foreach ($data as $key => $value){
-            $name = $value->grade." ".$value->major->name." ".$value->class;
-            
-            array_push($dataClasses , $name);
-        }
+        
 
         return response([
-            'data' => $dataClasses
+
+            'data' => $data
         ]);
     }
 }
