@@ -41,7 +41,7 @@ Route::prefix('ngabsen')->group(function (){
     });
 
     // Student
-    Route::put('/updateProfile/{user_id}' , [\App\Http\Controllers\User\ProfileController::class , 'editProfile']);
+    Route::put('/student/updateProfile/{user_id}' , [\App\Http\Controllers\User\ProfileController::class , 'editProfile']);
     Route::get('/student/attendanceHistory/{id}', [\App\Http\Controllers\User\AttendanceController::class, 'getAttendanceHistory']);
     Route::post('/attendance', [\App\Http\Controllers\User\AttendanceController::class, 'attendance'])->middleware('QR');
 
