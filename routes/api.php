@@ -41,7 +41,7 @@ Route::prefix('ngabsen')->group(function (){
     });
 
     // Student
-    Route::put('/updateProfile/{user_id}' , [\App\Http\Controllers\User\ProfileController::class , 'editProfile']);
+    Route::put('/student/updateProfile/{user_id}' , [\App\Http\Controllers\User\ProfileController::class , 'editProfile']);
     Route::get('/student/attendanceHistory/{id}', [\App\Http\Controllers\User\AttendanceController::class, 'getAttendanceHistory']);
     Route::post('/attendance', [\App\Http\Controllers\User\AttendanceController::class, 'attendance'])->middleware('QR');
 
@@ -54,6 +54,7 @@ Route::prefix('ngabsen')->group(function (){
 
     // Admin
     Route::post('/admin/userCreate' , [\App\Http\Controllers\Admin\UserController::class , 'create']);
+    Route::post('/admin/userEdit' , [\App\Http\Controllers\Admin\UserController::class , 'edit']);
     Route::post('/admin/userDelete', [\App\Http\Controllers\Admin\UserController::class, 'delete']);
     Route::get('/admin/userGetAll', [\App\Http\Controllers\Admin\UserController::class, 'getAll']);
 });

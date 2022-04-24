@@ -14,8 +14,6 @@ class UserController extends Controller
     {
         $input = $request->only('id_number');
 
-        $user = $request->only('name', 'phone', 'address', 'email', 'class', 'student_number');
-
         $input['password'] = md5($request->password);
 
         $input['role'] = !$request->role ? 'siswa' : $request->role;
@@ -29,7 +27,6 @@ class UserController extends Controller
         }
 
         if ($input['role'] === 'guru') {
-
             $teacher_input = $request->only('name', 'email', 'phone', 'address');
 
             $teacher_input['user_id'] = $create->id;
@@ -37,8 +34,9 @@ class UserController extends Controller
             $insert = teacher::create($teacher_input);
         }
         if ($input['role'] === 'siswa') {
+            $student_input = $request->only('name', 'phone', 'address', 'email', 'class', 'student_number');
 
-            $user['user_id'] = $create->id;
+            $student_input['user_id'] = $create->id;
 
             $insert = student::create($user);
         }
@@ -57,6 +55,38 @@ class UserController extends Controller
         return response([
             'siswa' => $data_students,
             'guru' => $data_teacher,
+        ]);
+    }
+    
+    function edit(Request $request)
+    {
+        $input = $request->only('user_id', 'id_number');
+
+        $input['password'] = md5($request->password);
+
+        $input['role'] = !$request->role ? 'siswa' : $request->role;
+
+        $create = User::where('id', $input['id'])->update($input);
+
+        if (!$create) {
+            return response([
+                'message' => 'Data Cant Be Processed'
+            ]);
+        }
+
+        if ($input['role'] === 'guru') {
+            $teacher_input = $request->only('id', 'name', 'email', 'phone', 'address');
+
+            $insert = teacher::where('id', $teacher_input['id'])->update($teacher_input);
+        }
+        if ($input['role'] === 'siswa') {
+            $student_input = $request->only('id', 'name', 'phone', 'address', 'email', 'class', 'student_number');
+
+            $insert = student::where('id', $student_input)->update($user);
+        }
+
+        return response([
+            'message' => 'Data Inserted'
         ]);
     }
 

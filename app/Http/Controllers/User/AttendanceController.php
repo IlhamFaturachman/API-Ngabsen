@@ -34,7 +34,7 @@ class AttendanceController extends Controller
         $input['attendance_id'] = $attendance_id;
 
         if (Carbon::parse($time) >= Carbon::parse($input['attendance_time'])){
-            $input['status'] = 'onTIme';
+            $input['status'] = 'onTime';
         }else{
             $input['status'] = 'late';
         }
