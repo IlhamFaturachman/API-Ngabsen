@@ -53,7 +53,8 @@ Route::prefix('ngabsen')->group(function (){
 
     // Admin
     Route::post('/admin/userCreate' , [\App\Http\Controllers\Admin\UserController::class , 'create']);
-    Route::post('/admin/userEdit' , [\App\Http\Controllers\Admin\UserController::class , 'edit']);
+    Route::post('/admin/userEdit/{id}' , [\App\Http\Controllers\Admin\UserController::class , 'edit']);
     Route::post('/admin/userDelete', [\App\Http\Controllers\Admin\UserController::class, 'delete']);
     Route::get('/admin/userGetAll', [\App\Http\Controllers\Admin\UserController::class, 'getAll']);
+    Route::get('/admin/getStudentAttendances', [\App\Http\Controllers\Admin\AttendanceController::class, 'getStudentAttendances']);
 });

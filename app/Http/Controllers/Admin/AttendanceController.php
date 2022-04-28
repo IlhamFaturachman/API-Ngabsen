@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Teacher;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\attendanceResource;
@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    function getAttendances(Request $request, $user_id){
-        $data = teacher::with('attendance_list')->where('user_id' , $user_id)->get();
+    function getStudentAttendances(Request $request){
+        $data = attendance::with('attendance_list')->get();
         
         return response([
             'data' => $data
