@@ -22,23 +22,6 @@ class AttendanceController extends Controller
         ]);
     }
 
-    // function getAllStudent(Request $request, $attendance_id){
-    //     $attendances = attendance::where('attendance_id', $attendance_id)->get();
-
-    //     foreach ($attendances as $key => $value) {
-    //         $student = student::where('user_id', $value->user_id)->first();
-    //         $data[$key] = [
-    //             "name" => $student->name,
-    //             "time" => $value->attendance_time,
-    //             "status" => $value->status,
-    //         ];
-    //     }
-        
-    //     return response([
-    //         'data' => $data
-    //     ]);
-    // }
-
     function getAttendanceDetails(Request $request, $attendance_id) {
         $data = attendance::with('student')->where('attendance_id' , $attendance_id)->get();
 

@@ -38,7 +38,7 @@ class UserController extends Controller
 
             $student_input['user_id'] = $create->id;
 
-            $insert = student::create($user);
+            $insert = student::create($student_input);
         }
 
         return response([
@@ -58,35 +58,45 @@ class UserController extends Controller
         ]);
     }
     
-    function edit(Request $request)
+    function edit(Request $request, $id)
     {
-        $input = $request->only('user_id', 'id_number');
+        $input = $request->only('id_number', 'password', 'role');
 
-        $input['password'] = md5($request->password);
+        if (!empty($input['password'])) {
+            $input['password'] = md5($input['password']);
+        }
 
-        $input['role'] = !$request->role ? 'siswa' : $request->role;
+        if (!empty($input)) {
+            $update = User::find($id)->update($input);
+        }
 
-        $create = User::where('id', $input['id'])->update($input);
-
-        if (!$create) {
+        if (!$update) {
             return response([
-                'message' => 'Data Cant Be Processed'
+                'message' => 'Data Cant Be Processed',
+                'id' => $id,
+                'data' => $input,
             ]);
         }
 
-        if ($input['role'] === 'guru') {
-            $teacher_input = $request->only('id', 'name', 'email', 'phone', 'address');
-
-            $insert = teacher::where('id', $teacher_input['id'])->update($teacher_input);
-        }
-        if ($input['role'] === 'siswa') {
-            $student_input = $request->only('id', 'name', 'phone', 'address', 'email', 'class', 'student_number');
-
-            $insert = student::where('id', $student_input)->update($user);
+        if (!empty($input['role'])) {
+            if ($input['role'] === 'guru') {
+                $teacher_input = $request->only('name', 'email', 'phone', 'address');
+    
+                if (!empty($student_input)) {
+                    $updateTeacher = teacher::where('user_id', $id)->update($teacher_input);
+                }
+            }
+            if ($input['role'] === 'siswa') {
+                $student_input = $request->only('name', 'phone', 'address', 'email', 'class', 'student_number');
+    
+                if (!empty($student_input)) {
+                    $updateStudent = student::where('user_id', $id)->update($student_input);
+                }
+            }
         }
 
         return response([
-            'message' => 'Data Inserted'
+            'message' => 'Data Inserted',
         ]);
     }
 
