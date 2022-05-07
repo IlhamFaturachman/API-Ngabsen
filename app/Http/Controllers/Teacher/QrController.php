@@ -16,8 +16,8 @@ class QrController extends Controller
             'subject_id' => 'required',
             'class_id' => 'required',
             'date' => 'required| dateFormat:Y-m-d',
-            'open_time' => 'required| dateFormat:Y-m-d H:i:s',
-            'closed_time' => 'required | dateFormat:Y-m-d H:i:s',
+            'open_time' => 'required| dateFormat:Y-m-d H:i:s.v',
+            'closed_time' => 'required | dateFormat:Y-m-d H:i:s.v',
             'qr_value' => 'required',
             // 'image' => 'required'
         ]);
