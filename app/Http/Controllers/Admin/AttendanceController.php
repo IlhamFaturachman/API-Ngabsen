@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    function getStudentAttendances(Request $request){
-        $data = attendance::with('attendance_list')->get();
-        
+    function getStudentAttendances(Request $request) {
+        $data = attendance::all();
+
         return response([
-            'data' => $data
+            'data' => $data,
         ]);
     }
 }
